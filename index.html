@@ -125,7 +125,7 @@
       margin-bottom: 25px;
     }
 
-    /* ENVELOPE DESIGN */
+    /* ENVELOPE DESIGN - FIXED Z-INDEX ISSUES */
     .envelope-box {
       position: relative;
       width: 290px;
@@ -149,7 +149,7 @@
       background: #d62828;
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: top;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.6s ease, opacity 0.4s ease;
       z-index: 3;
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
@@ -157,6 +157,7 @@
 
     .envelope-box.open .envelope-flap {
       transform: rotateX(180deg);
+      opacity: 0.1;
       z-index: 1;
     }
 
@@ -175,11 +176,12 @@
       font-size: 22px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
       z-index: 4;
-      transition: opacity 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .envelope-box.open .seal {
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
     }
 
@@ -192,7 +194,7 @@
       color: #222;
       border-radius: 10px;
       padding: 18px;
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.6s ease;
       z-index: 2;
       box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
       display: flex;
@@ -202,8 +204,8 @@
     }
 
     .envelope-box.open .card-inside {
-      transform: translateY(-90px);
-      z-index: 5;
+      transform: translateY(-85px);
+      z-index: 10;
     }
 
     /* GLASS CARD CONTAINER */
@@ -332,7 +334,6 @@
       align-items: center;
     }
 
-    /* Panda Ears */
     .panda-face::before, .panda-face::after {
       content: '';
       position: absolute;
@@ -345,7 +346,6 @@
     .panda-face::before { left: 5px; }
     .panda-face::after { right: 5px; }
 
-    /* Panda Eyes & Nose */
     .panda-eye-left, .panda-eye-right {
       position: absolute;
       top: 32px;
@@ -416,7 +416,7 @@
       100% { transform: translateX(-50%) scale(1.15); }
     }
 
-    /* GIFT BOX (FEATURE 4) */
+    /* GIFT BOX */
     .gift-container {
       margin: 25px 0 15px 0;
       cursor: pointer;
@@ -511,7 +511,6 @@
 
   <button class="music-btn" onclick="toggleMusic()" id="musicBtn">🎵</button>
 
-  <!-- Floating background particles -->
   <div class="bg-hearts" id="bgHearts"></div>
 
   <div class="container">
@@ -521,7 +520,7 @@
       <h1 class="title">A Secret Letter 💌</h1>
       <p class="subtitle">Tap the envelope to unseal the surprise</p>
       
-      <div class="envelope-box" id="envelope" onclick="openEnvelope()">
+      <div class="envelope-box" id="envelope" onclick="handleEnvelopeClick()">
         <div class="envelope-flap"></div>
         <div class="seal">👑</div>
         <div class="card-inside">
@@ -616,7 +615,7 @@
       </div>
     </div>
 
-    <!-- STEP 5: VIRTUAL GIFT BOX (FEATURE 4) -->
+    <!-- STEP 5: VIRTUAL GIFT BOX -->
     <div class="step" id="step5">
       <div class="glass-card">
         <h2 class="title">Virtual Gift 🎁</h2>
@@ -667,18 +666,18 @@
       bgContainer.appendChild(heart);
     }
 
-    // Background Audio Handler
+    // Audio Handler
     const music = document.getElementById('bgMusic');
     let isPlaying = false;
 
     function toggleMusic() {
       if (isPlaying) {
         music.pause();
-        document.getElementById('musicBtn').innerText = '📁';
+        document.getElementById('musicBtn').innerText = '🎵';
         isPlaying = false;
       } else {
-        music.play();
-        document.getElementById('musicBtn').innerText = '🎵';
+        music.play().catch(() => {});
+        document.getElementById('musicBtn').innerText = '🔊';
         isPlaying = true;
       }
     }
@@ -687,12 +686,11 @@
     let envelopeOpened = false;
     let poppedCount = 0;
 
-    function openEnvelope() {
+    function handleEnvelopeClick() {
       const env = document.getElementById('envelope');
       if (!envelopeOpened) {
         env.classList.add('open');
         envelopeOpened = true;
-        // Start playing music on first click
         if(!isPlaying) { toggleMusic(); }
       } else {
         nextStep(2);
@@ -726,4 +724,6 @@
     }
 
     const wishes = [
-   
+      "1. You are the sweetest person ever! 💖",
+      "2. Thank you for making life so special ✨",
+      "
