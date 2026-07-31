@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Special Surprise For You 💖</title>
+  <style>
+    :root {
+      --bg-color: #0d0a14;
+      --card-bg: rgba(255, 255, 255, 0.07);
+      --accent-color: #ff4081;
+      --gold-color: #ffd700;
+      --text-color: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .step {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    .step.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STEP 1: FIXED ENVELOPE (Perfect Responsive Alignment) */
+    .envelope-wrapper {
+      position: relative;
+      width: 280px;
+      height: 180px;
+      background: #e63946;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      cursor: pointer;
+      margin-top: 80px;
+      margin-bottom: 20px;
+    }
+
+    .envelope-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 110px;
+      background: #d62828;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transition: transform 0.6s ease-in-out;
+      z-index: 3;
+    }
+
+    .envelope-wrapper.open::before {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .wax-seal {
+      position: absolute;
+      top: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 45px;
+      height: 45px;
+      background: var(--gold-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 4;
+      transition: opacity 0.4s ease;
+    }
+
+    .envelope-wrapper.open .wax-seal {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .letter-preview {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85%;
+      height: 85%;
+      background: #ffffff;
+      color: #333;
+      border-radius: 8px;
+      padding: 15px;
+      transition: transform 0.8s ease-in-out;
+      z-index: 2;
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .envelope-wrapper.open .letter-preview {
+      transform: translate(-50%, -100px);
+      z-index: 5;
+    }
+
+    /* STEP 2: PIN LOCK */
+    .pin-box {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
+    }
+
+    .pin-display {
+      font-size: 24px;
+      letter-spacing: 10px;
+      margin: 15px 0;
+      min-height: 35px;
+      color: var(--accent-color);
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .key {
+      padding: 15px;
+      font-size: 18px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .key:active {
+      background: var(--accent-color);
+    }
+
+    /* BUTTON STYLES */
+    .btn {
+      margin-top: 25px;
+      padding: 12px 30px;
+      background: linear-gradient(45deg, #ff4081, #ff80ab);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+    }
+
+    /* STEP 3: MAIN COUNTER */
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    .counter-card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .counter-card h3 {
+      font-size: 22px;
+      color: var(--accent-color);
+    }
+
+    /* STEP 4: BALLOON POP */
+    .balloon-container {
+      display: flex;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .balloon {
+      width: 60px;
+      height: 75px;
+      background: var(--accent-color);
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      transition: transform 0.2s;
+    }
+
+    .balloon:hover { transform: scale(1.1); }
+    .balloon.popped { visibility: hidden; }
+
+    /* STEP 5: FINAL LETTER CARD */
+    .letter-card {
+      background: #fff;
+      color: #222;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: left;
+      line-height: 1.6;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- STEP 1: ENVELOPE CARD -->
+    <div class="step active" id="step1">
+      <h2 style="font-family: cursive; color: var(--accent-color);">A Special Letter For You ✨</h2>
+      <p style="font-size: 14px; opacity: 0.8; margin-top: 5px;">Tap the envelope to open it</p>
+      
+      <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <div class="wax-seal">👑</div>
+        <div class="letter-preview">
+          <p style="font-size: 12px; color: #888;">To My Favorite Person ❤️</p>
+          <p style="font-size: 13px; font-weight: bold; margin-top: 8px; color: #222;">Tap again to unlock the secret gift...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: PIN LOCK CODE -->
+    <div class="step" id="step2">
+      <h2>Secret Lock 🔒</h2>
+      <p style="font-size: 13px; opacity: 0.8; margin-top: 5px;">Enter the passcode: <b>1234</b></p>
+      <div class="pin-box" style="margin-top: 20px;">
+        <div class="pin-display" id="pinDisplay">****</div>
+        <div class="keypad">
+          <button class="key" onclick="pressKey('1')">1</button>
+          <button class="key" onclick="pressKey('2')">2</button>
+          <button class="key" onclick="pressKey('3')">3</button>
+          <button class="key" onclick="pressKey('4')">4</button>
+          <button class="key" onclick="pressKey('5')">5</button>
+          <button class="key" onclick="pressKey('6')">6</button>
+          <button class="key" onclick="pressKey('7')">7</button>
+          <button class="key" onclick="pressKey('8')">8</button>
+          <button class="key" onclick="pressKey('9')">9</button>
+          <button class="key" onclick="clearPin()">C</button>
+          <button class="key" onclick="pressKey('0')">0</button>
+          <button class="key" onclick="checkPin()">✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: AGE COUNTER -->
+    <div class="step" id="step3">
+      <h2>Happy Birthday Cutiepie 🎂</h2>
+      <p style="font-size: 13px; opacity: 0.8; margin-top: 5px;">The world has been better since:</p>
+      
+      <div class="counter-grid">
+        <div class="counter-card">
+          <h3 id="years">20</h3>
+          <p style="font-size: 12px; opacity: 0.7;">Years</p>
+        </div>
+        <div class="counter-card">
+          <h3 id="days">7,304</h3>
+          <p style="font-size: 12px; opacity: 0.7;">Days</p>
+        </div>
+        <div class="counter-card">
+          <h3 id="hours">175,314</h3>
+          <p style="font-size: 12px; opacity: 0.7;">Hours</p>
+        </div>
+        <div class="counter-card">
+          <h3 id="minutes">10,518,870</h3>
+          <p style="font-size: 12px; opacity: 0.7;">Minutes</p>
+        </div>
+      </div>
+
+      <button class="btn" onclick="nextStep(4)">See Our Memories ✨</button>
+    </div>
+
+    <!-- STEP 4: BALLOON POP WISHES -->
+    <div class="step" id="step4">
+      <h2>Pop The Balloons 🎈</h2>
+      <p style="font-size: 13px; opacity: 0.8; margin-top: 5px;">Pop all balloons to reveal wishes!</p>
+
+      <div class="balloon-container">
+        <div class="balloon" onclick="popBalloon(this)">🎈</div>
+        <div class="balloon" style="background:#00bcd4;" onclick="popBalloon(this)">🎈</div>
+        <div class="balloon" style="background:#9c27b0;" onclick="popBalloon(this)">🎈</div>
+      </div>
+
+      <p id="wishText" style="min-height: 40px; color: var(--gold-color); font-size: 15px; font-weight: bold;"></p>
+
+      <button class="btn" id="nextToLetter" style="display:none;" onclick="nextStep(5)">Read My Letter 💌</button>
+    </div>
+
+    <!-- STEP 5: FINAL LOVE LETTER -->
+    <div class="step" id="step5">
+      <div class="letter-card">
+        <h3 style="color: var(--accent-color); margin-bottom: 10px;">My Dearest, ❤️</h3>
+        <p style="font-size: 14px; color: #444;">
+          On this very special day, I want you to know how deeply you are loved. Every moment spent with you feels like a beautiful dream.
+          <br><br>
+          You make every ordinary day feel extraordinary. Your smile is my favorite thing in the whole world!
+          <br><br>
+          <b>Happy Birthday, my love! ✨</b>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentPin = "";
+    let envelopeOpened = false;
+    let poppedCount = 0;
+
+    function openEnvelope() {
+      const env = document.getElementById('envelope');
+      if (!envelopeOpened) {
+        env.classList.add('open');
+        envelopeOpened = true;
+      } else {
+        nextStep(2);
+      }
+    }
+
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById('step' + stepNumber).classList.add('active');
+    }
+
+    function pressKey(num) {
+      if (currentPin.length < 4) {
+        currentPin += num;
+        document.getElementById('pinDisplay').innerText = '*'.repeat(currentPin.length);
+      }
+    }
+
+    function clearPin() {
+      currentPin = "";
+      document.getElementById('pinDisplay').innerText = "****";
+    }
+
+    function checkPin() {
+      if (currentPin === "1234") {
+        nextStep(3);
+      } else {
+        alert("Incorrect PIN! Try 1234");
+        clearPin();
+      }
+    }
+
+    const wishes = [
+      "You are my favorite person, always! 💖",
+      "You make my whole world brighter ✨",
+      "You deserve all the happiness in the universe 🌌"
+    ];
+
+    function popBalloon(element) {
+      element.classList.add('popped');
+      document.getElementById('wishText').innerText = wishes[poppedCount];
+      poppedCount++;
+      if (poppedCount === 3) {
+        document.getElementById('nextToLetter').style.display = 'inline-block';
+      }
+    }
+  </script>
+</body>
+  </html>
+  
