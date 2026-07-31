@@ -521,11 +521,6 @@
 </head>
 <body>
 
-  <!-- Sound effect for balloon bursting -->
-  <audio id="popSound" preload="auto">
-    <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
-  </audio>
-
   <div class="bg-hearts" id="bgHearts"></div>
 
   <div class="container">
@@ -697,4 +692,14 @@
       if (typeof confetti === 'function') {
         confetti({
           particleCount: 100,
- 
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    let currentPin = "";
+    let poppedCount = 0;
+
+    function openEnvelopeDirectly() {
+      const env = document.getEle
