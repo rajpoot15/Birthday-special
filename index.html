@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Special Surprise For You 💖</title>
-  <!-- JS Canvas Confetti for Blast Effects -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --bg-gradient: linear-gradient(135deg, #0f0c20 0%, #1a102f 50%, #2a0826 100%);
@@ -105,6 +103,7 @@
       margin-bottom: 25px;
     }
 
+    /* ENVELOPE WRAPPER FIXED */
     .envelope-box {
       position: relative;
       width: 290px;
@@ -186,6 +185,7 @@
       transform: translateY(-50px);
     }
 
+    /* GLASS CARD CONTAINER */
     .glass-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -197,6 +197,7 @@
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     }
 
+    /* KEYPAD & PIN DESIGN */
     .pin-display {
       font-size: 28px;
       letter-spacing: 15px;
@@ -233,79 +234,34 @@
       transform: scale(0.92);
     }
 
-    /* Live Counter Styling */
+    /* COUNTER GRID */
     .counter-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
       margin: 20px 0;
     }
 
     .counter-card {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 12px 5px;
-      border-radius: 12px;
+      padding: 18px 10px;
+      border-radius: 16px;
     }
 
     .counter-card h3 {
-      font-size: 18px;
+      font-size: 22px;
       color: var(--accent-color);
       font-weight: 700;
     }
 
     .counter-card p {
-      font-size: 11px;
+      font-size: 12px;
       color: rgba(255, 255, 255, 0.6);
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
-    /* Floating Compliment Cards */
-    .reasons-container {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    .reason-card {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 15px;
-      padding: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: left;
-    }
-
-    .reason-card .card-title {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--gold-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .reason-card .card-content {
-      max-height: 0;
-      overflow: hidden;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
-      transition: max-height 0.4s ease, margin-top 0.3s ease;
-      line-height: 1.5;
-    }
-
-    .reason-card.open {
-      background: rgba(255, 51, 102, 0.15);
-      border-color: var(--accent-color);
-    }
-
-    .reason-card.open .card-content {
-      max-height: 100px;
-      margin-top: 10px;
-    }
-
+    /* BALLOONS */
     .balloon-box {
       display: flex;
       justify-content: center;
@@ -329,6 +285,7 @@
     .balloon:active { transform: scale(0.85); }
     .balloon.popped { opacity: 0; pointer-events: none; transform: scale(0); }
 
+    /* PANDA CAKE */
     .panda-cake-box {
       display: none;
       flex-direction: column;
@@ -436,6 +393,7 @@
       100% { transform: translateX(-50%) scale(1.15); }
     }
 
+    /* GIFT BOX */
     .gift-container {
       margin: 25px 0 15px 0;
       cursor: pointer;
@@ -494,6 +452,7 @@
       animation: fadeInUp 0.5s forwards;
     }
 
+    /* BUTTONS */
     .btn {
       width: 100%;
       padding: 15px;
@@ -511,6 +470,7 @@
 
     .btn:active { transform: scale(0.97); }
 
+    /* LETTER TEXT */
     .letter-text {
       color: #333;
       text-align: left;
@@ -525,6 +485,7 @@
 
   <div class="container">
 
+    <!-- STEP 1: ENVELOPE CARD -->
     <div class="step active" id="step1">
       <h1 class="title">A Secret Letter 💌</h1>
       <p class="subtitle">Tap the envelope to unseal the surprise</p>
@@ -539,6 +500,7 @@
       </div>
     </div>
 
+    <!-- STEP 2: PIN LOCK CODE -->
     <div class="step" id="step2">
       <div class="glass-card">
         <h2 class="title" style="font-size: 22px;">Enter Secret PIN 🔒</h2>
@@ -563,45 +525,28 @@
       </div>
     </div>
 
+    <!-- STEP 3: AGE COUNTER -->
     <div class="step" id="step3">
       <div class="glass-card">
         <h2 class="title">Happy Birthday! 🎂</h2>
-        <p class="subtitle">Making the world brighter for:</p>
+        <p class="subtitle">Bringing joy to the world for:</p>
         
-        <!-- Live Ticking Counter -->
         <div class="counter-grid">
-          <div class="counter-card"><h3 id="cntYears">0</h3><p>Years</p></div>
-          <div class="counter-card"><h3 id="cntDays">0</h3><p>Days</p></div>
-          <div class="counter-card"><h3 id="cntHours">0</h3><p>Hours</p></div>
-          <div class="counter-card"><h3 id="cntMinutes">0</h3><p>Minutes</p></div>
-          <div class="counter-card"><h3 id="cntSeconds" style="color: var(--gold-color);">0</h3><p>Seconds</p></div>
-          <div class="counter-card"><h3 style="color: #00e676;">💖</h3><p>And Counting</p></div>
-        </div>
-
-        <button class="btn" onclick="nextStep(35)">Reasons Why You're Special 💌</button>
-      </div>
-    </div>
-
-    <!-- Step 3.5: Reasons Why You Are Special -->
-    <div class="step" id="step35">
-      <div class="glass-card">
-        <h2 class="title">Why You Are Special ✨</h2>
-        <p class="subtitle">Tap each card to reveal!</p>
-
-        <div class="reasons-container">
-          <div class="reason-card" onclick="toggleReason(this)">
-            <div class="card-title"><span>💖 Reason #1</span> <span>▼</span></div>
-            <div class="card-content">Your smile has a magical way of lighting up even the dullest days!</div>
+          <div class="counter-card">
+            <h3>20</h3>
+            <p>Years</p>
           </div>
-
-          <div class="reason-card" onclick="toggleReason(this)">
-            <div class="card-title"><span>🌟 Reason #2</span> <span>▼</span></div>
-            <div class="card-content">The kindness and warmth you bring into every conversation is irreplaceable.</div>
+          <div class="counter-card">
+            <h3>7,304</h3>
+            <p>Days</p>
           </div>
-
-          <div class="reason-card" onclick="toggleReason(this)">
-            <div class="card-title"><span>👑 Reason #3</span> <span>▼</span></div>
-            <div class="card-content">You are simply one of a kind—effortlessly charming and truly precious!</div>
+          <div class="counter-card">
+            <h3>175,314</h3>
+            <p>Hours</p>
+          </div>
+          <div class="counter-card">
+            <h3>10.5M</h3>
+            <p>Minutes</p>
           </div>
         </div>
 
@@ -609,6 +554,7 @@
       </div>
     </div>
 
+    <!-- STEP 4: BALLOON POP & PANDA CAKE -->
     <div class="step" id="step4">
       <div class="glass-card">
         <h2 class="title">Pop The Balloons 🎈</h2>
@@ -622,6 +568,7 @@
 
         <p id="wishText" style="min-height: 30px; color: var(--gold-color); font-size: 14px; font-weight: 600; padding: 0 10px;"></p>
 
+        <!-- PANDA CAKE REVEAL -->
         <div class="panda-cake-box" id="pandaCake">
           <div class="candle"><div class="flame"></div></div>
           <div class="panda-face">
@@ -638,6 +585,7 @@
       </div>
     </div>
 
+    <!-- STEP 5: VIRTUAL GIFT BOX -->
     <div class="step" id="step5">
       <div class="glass-card">
         <h2 class="title">Virtual Gift 🎁</h2>
@@ -659,6 +607,7 @@
       </div>
     </div>
 
+    <!-- STEP 6: FINAL LOVE LETTER -->
     <div class="step" id="step6">
       <div class="glass-card" style="background: #ffffff; color: #222;">
         <h2 class="title" style="background: none; -webkit-text-fill-color: initial; color: #ff3366; text-align: left; margin-bottom: 12px;">My Dearest, ❤️</h2>
@@ -675,7 +624,7 @@
   </div>
 
   <script>
-    // Background floating hearts
+    // Create background floating hearts
     const bgContainer = document.getElementById('bgHearts');
     for (let i = 0; i < 15; i++) {
       const heart = document.createElement('div');
@@ -687,19 +636,68 @@
       bgContainer.appendChild(heart);
     }
 
-    // Confetti Effect Function
-    function triggerConfetti() {
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      }
-    }
-
     let currentPin = "";
     let poppedCount = 0;
 
     function openEnvelopeDirectly() {
-      const env = document.getEle
+      const env = document.getElementById('envelope');
+      env.classList.add('opening');
+      
+      setTimeout(() => {
+        nextStep(2);
+      }, 450);
+    }
+
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById('step' + stepNumber).classList.add('active');
+    }
+
+    function pressKey(num) {
+      if (currentPin.length < 4) {
+        currentPin += num;
+        document.getElementById('pinDisplay').innerText = '*'.repeat(currentPin.length);
+      }
+    }
+
+    function clearPin() {
+      currentPin = "";
+      document.getElementById('pinDisplay').innerText = "****";
+    }
+
+    function checkPin() {
+      if (currentPin === "1723") {
+        nextStep(3);
+      } else {
+        alert("Incorrect PIN! Try again 😉");
+        clearPin();
+      }
+    }
+
+    const wishes = [
+      "1. You are the sweetest person ever! 💖",
+      "2. Thank you for making life so special ✨",
+      "3. Wishing you endless happiness & joy! 🌌"
+    ];
+
+    function popBalloon(element) {
+      element.classList.add('popped');
+      document.getElementById('wishText').innerText = wishes[poppedCount];
+      poppedCount++;
+      if (poppedCount === 3) {
+        document.getElementById('balloonSub').style.display = 'none';
+        document.getElementById('pandaCake').style.display = 'flex';
+        document.getElementById('nextToGift').style.display = 'block';
+      }
+    }
+
+    function openGift() {
+      document.getElementById('giftBox').classList.add('open');
+      setTimeout(() => {
+        document.getElementById('giftSurprise').style.display = 'block';
+      }, 400);
+    }
+  </script>
+</body>
+</html>
+
