@@ -34,26 +34,6 @@
       padding: 15px;
     }
 
-    .music-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
     .bg-hearts {
       position: fixed;
       top: 0;
@@ -492,14 +472,6 @@
 </head>
 <body>
 
-  <!-- Audio file name set to music.mp3 -->
-  <audio id="bgMusic" loop preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Toggle button for music -->
-  <button class="music-btn" onclick="toggleMusic()" id="musicBtn">🎵</button>
-
   <div class="bg-hearts" id="bgHearts"></div>
 
   <div class="container">
@@ -647,38 +619,12 @@
       bgContainer.appendChild(heart);
     }
 
-    const music = document.getElementById('bgMusic');
-    let isPlaying = false;
-
-    function toggleMusic() {
-      if (isPlaying) {
-        music.pause();
-        document.getElementById('musicBtn').innerText = '🎵';
-        isPlaying = false;
-      } else {
-        music.play().then(() => {
-          document.getElementById('musicBtn').innerText = '🔊';
-          isPlaying = true;
-        }).catch(err => {
-          console.log("Audio play blocked:", err);
-        });
-      }
-    }
-
     let currentPin = "";
     let poppedCount = 0;
 
     function openEnvelopeDirectly() {
       const env = document.getElementById('envelope');
       env.classList.add('opening');
-      
-      if(!isPlaying) {
-        music.play().then(() => {
-          isPlaying = true;
-          document.getElementById('musicBtn').innerText = '🔊';
-        }).catch(() => {});
-      }
-
       setTimeout(() => {
         nextStep(2);
       }, 450);
@@ -726,4 +672,17 @@
       if (poppedCount === 3) {
         document.getElementById('balloonSub').style.display = 'none';
         document.getElementById('pandaCake').style.display = 'flex';
-        document.getElementById('nextToGift').s
+        document.getElementById('nextToGift').style.display = 'block';
+      }
+    }
+
+    function openGift() {
+      document.getElementById('giftBox').classList.add('open');
+      setTimeout(() => {
+        document.getElementById('giftSurprise').style.display = 'block';
+      }, 400);
+    }
+  </script>
+</body>
+</html>
+
