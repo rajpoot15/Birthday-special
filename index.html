@@ -34,6 +34,27 @@
       padding: 15px;
     }
 
+    /* Music Toggle Button */
+    .music-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
     .bg-hearts {
       position: fixed;
       top: 0;
@@ -481,6 +502,13 @@
 </head>
 <body>
 
+  <!-- Background Music from Google Drive Link -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://docs.google.com/uc?export=download&id=1FtGOpcvGxSio8dqu6zOp8hoJJD9Z2F-v" type="audio/mpeg">
+  </audio>
+
+  <button class="music-btn" onclick="toggleMusic()" id="musicBtn">🎵</button>
+
   <div class="bg-hearts" id="bgHearts"></div>
 
   <div class="container">
@@ -624,7 +652,7 @@
   </div>
 
   <script>
-    // Create background floating hearts
+    // Floating Hearts Setup
     const bgContainer = document.getElementById('bgHearts');
     for (let i = 0; i < 15; i++) {
       const heart = document.createElement('div');
@@ -636,12 +664,56 @@
       bgContainer.appendChild(heart);
     }
 
+    // Audio Control Logic
+    const music = document.getElementById('bgMusic');
+    let isPlaying = false;
+
+    function toggleMusic() {
+      if (isPlaying) {
+        music.pause();
+        document.getElementById('musicBtn').innerText = '🎵';
+        isPlaying = false;
+      } else {
+        music.play().then(() => {
+          document.getElementById('musicBtn').innerText = '🔊';
+          isPlaying = true;
+        }).catch((err) => {
+          console.log("Audio play blocked/failed:", err);
+        });
+      }
+    }
+
+    // Realistic Balloon Pop Sound Generator (Web Audio API)
+    function playPopSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.08);
+
+        gain.gain.setValueAtTime(1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      } catch (e) {
+        console.log("AudioContext error:", e);
+      }
+    }
+
     let currentPin = "";
     let poppedCount = 0;
 
     function openEnvelopeDirectly() {
       const env = document.getElementById('envelope');
       env.classList.add('opening');
+      if(!isPlaying) { toggleMusic(); }
       
       setTimeout(() => {
         nextStep(2);
@@ -649,55 +721,4 @@
     }
 
     function nextStep(stepNumber) {
-      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-      document.getElementById('step' + stepNumber).classList.add('active');
-    }
-
-    function pressKey(num) {
-      if (currentPin.length < 4) {
-        currentPin += num;
-        document.getElementById('pinDisplay').innerText = '*'.repeat(currentPin.length);
-      }
-    }
-
-    function clearPin() {
-      currentPin = "";
-      document.getElementById('pinDisplay').innerText = "****";
-    }
-
-    function checkPin() {
-      if (currentPin === "1723") {
-        nextStep(3);
-      } else {
-        alert("Incorrect PIN! Try again 😉");
-        clearPin();
-      }
-    }
-
-    const wishes = [
-      "1. You are the sweetest person ever! 💖",
-      "2. Thank you for making life so special ✨",
-      "3. Wishing you endless happiness & joy! 🌌"
-    ];
-
-    function popBalloon(element) {
-      element.classList.add('popped');
-      document.getElementById('wishText').innerText = wishes[poppedCount];
-      poppedCount++;
-      if (poppedCount === 3) {
-        document.getElementById('balloonSub').style.display = 'none';
-        document.getElementById('pandaCake').style.display = 'flex';
-        document.getElementById('nextToGift').style.display = 'block';
-      }
-    }
-
-    function openGift() {
-      document.getElementById('giftBox').classList.add('open');
-      setTimeout(() => {
-        document.getElementById('giftSurprise').style.display = 'block';
-      }, 400);
-    }
-  </script>
-</body>
-</html>
-
+      doc
